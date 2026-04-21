@@ -9,7 +9,7 @@ export {
   AppError,
   createError,
 } from './middleware/errorHandler.js';
-// export { authenticate, isAdmin } from './middleware/auth.middleware.js';
+export { authenticate, isAdmin } from './middleware/auth.middleware.js';
 export { validateRequest } from './middleware/validate.middleware.js';
 
 // Utils
