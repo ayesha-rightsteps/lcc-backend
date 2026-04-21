@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  server:
+    container_name: lcc-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: server
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    networks:
+      - prod-net
+      - proxy-network
+    profiles:
+      - production
+
+networks:
+  prod-net:
+    driver: bridge
+  proxy-network:
+    external: true
