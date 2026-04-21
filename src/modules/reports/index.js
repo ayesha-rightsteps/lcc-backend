@@ -1,1 +1,1 @@
-export { reportRoutes } from './report.route.js';
+export { reportRoutes } from './routes/report.route.js';

@@ -5,7 +5,7 @@ const exampleService = async (data) => {
   try {
     logger.info('Example service called', { data });
 
-    const mongoose = getMongoose();
+    getMongoose();
     const result = { acknowledged: true, data };
 
     return result;

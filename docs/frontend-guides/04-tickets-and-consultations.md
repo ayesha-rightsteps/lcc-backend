@@ -7,13 +7,13 @@ This document handles Support channels and One-on-One Consultations.
 ### Student Actions
 - **Create Ticket:** `POST /v1/tickets`
   - Body: `{ "subject": "Login issues", "message": "My IP is locked." }`
-- **Get My Tickets:** `GET /v1/tickets/my-tickets`
+- **Get My Tickets:** `GET /v1/tickets/my`
 - **Reply:** `POST /v1/tickets/:ticketId/reply`
   - Body: `{ "message": "Thanks!" }`
 
 ### Admin Actions
 - **Get All Tickets:** `GET /v1/tickets` (Supports `?status=open`)
-- **Change Status:** `PATCH /v1/tickets/:ticketId/status`
+- **Change Status:** `POST /v1/tickets/:ticketId/status`
   - Body: `{ "status": "resolved" }` // open | in_progress | resolved | closed
 - **Reply:** `POST /v1/tickets/:ticketId/reply`
 
@@ -34,5 +34,5 @@ This document handles Support channels and One-on-One Consultations.
   - *Effect:* Fires an acceptance email directly to student.
 - **Reject:** `POST /v1/consultations/:id/reject`
   - Body: `{ "rejectionReason": "Too busy this week" }` (optional)
-- **Mark Complete/Paid:** `PATCH /v1/consultations/:id/status`
-  - Body: `{ "status": "completed", "paymentStatus": "paid", "paymentAmount": 1500 }` (Payment logic is manual proxy)
+- **Mark Complete/Paid:** `POST /v1/consultations/:id/complete`
+  - Body: `{ "paymentStatus": "paid", "paymentAmount": 1500 }` (Payment logic is manual proxy)

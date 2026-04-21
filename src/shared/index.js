@@ -27,3 +27,11 @@ export {
   setCookieOptions,
 } from './utils/jwt.js';
 export { hashPassword, comparePassword } from './utils/password.js';
+
+// Services
+export {
+  welcomeStudentTemplate,
+  passwordResetTemplate,
+  consultationAcceptedTemplate,
+  consultationRejectedTemplate,
+} from './services/email-template.service.js';

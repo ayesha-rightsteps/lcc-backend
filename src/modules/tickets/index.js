@@ -1,1 +1,1 @@
-export { ticketRoutes } from './ticket.route.js';
+export { ticketRoutes } from './routes/ticket.route.js';

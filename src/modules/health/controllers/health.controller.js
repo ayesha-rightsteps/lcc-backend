@@ -164,8 +164,8 @@ const getSystemStatus = asyncHandler(async (req, res) => {
     const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     const filter = {};
-    if (status) filter.status = status;
-    if (environment) filter.environment = environment;
+    if (status) {filter.status = status;}
+    if (environment) {filter.environment = environment;}
 
     const [total, records] = await Promise.all([
       SystemStatus.countDocuments(filter),

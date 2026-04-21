@@ -1,1 +1,1 @@
-export { securityRoutes } from './security.route.js';
+export { securityRoutes } from './routes/security.route.js';

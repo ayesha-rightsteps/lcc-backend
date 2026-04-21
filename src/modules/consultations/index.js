@@ -1,1 +1,1 @@
-export { consultationRoutes } from './consultation.route.js';
+export { consultationRoutes } from './routes/consultation.route.js';

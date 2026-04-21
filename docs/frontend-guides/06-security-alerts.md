@@ -66,7 +66,7 @@ Provides Sir with a chronological feed of all recorded piracy violations.
 
 ## 3. Mark Alert as Reviewed (Admin)
 
-**Endpoint:** `PATCH /v1/security/alerts/:id/review`
+**Endpoint:** `POST /v1/security/alerts/:id/review`
 
 **Headers Required:**
 - `Authorization: Bearer <Admin_Access_Token>`

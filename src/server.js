@@ -9,8 +9,7 @@ const PORT = config.port || 3000;
 
 async function startServer() {
   try {
-    // TODO: Update this message with your project name
-    logger.startup('Starting Express Modular Backend Server...');
+    logger.startup('Starting LCC Academy Server...');
     await connectDatabases();
 
     const server = app.listen(PORT, () => {

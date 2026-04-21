@@ -32,7 +32,7 @@ The frontend must call this ping every 15 minutes while the student is active on
 
 ## 2. Admin Controls: Modify Student
 
-**Endpoint:** `PATCH /v1/users/:studentId/status`
+**Endpoint:** `POST /v1/users/:studentId/status`
 
 **Headers Required:**
 - `Authorization: Bearer <Admin_Access_Token>`
@@ -82,7 +82,7 @@ The frontend must call this ping every 15 minutes while the student is active on
 
 ## 4. Admin Controls: IP Controls
 
-**Endpoint:** `PATCH /v1/users/:studentId/ips`
+**Endpoint:** `POST /v1/users/:studentId/ips`
 
 **Headers Required:**
 - `Authorization: Bearer <Admin_Access_Token>`

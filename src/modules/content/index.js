@@ -1,1 +1,1 @@
-export { contentRoutes } from './content.route.js';
+export { contentRoutes } from './routes/content.route.js';
