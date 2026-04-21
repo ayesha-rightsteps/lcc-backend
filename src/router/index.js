@@ -6,6 +6,7 @@ import { contentRoutes } from '../modules/content/index.js';
 import { ticketRoutes } from '../modules/tickets/index.js';
 import { consultationRoutes } from '../modules/consultations/index.js';
 import { reportRoutes } from '../modules/reports/index.js';
+import { securityRoutes } from '../modules/security/index.js';
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use('/content', contentRoutes);
 router.use('/tickets', ticketRoutes);
 router.use('/consultations', consultationRoutes);
 router.use('/reports', reportRoutes);
+router.use('/security', securityRoutes);
 
 export default router;

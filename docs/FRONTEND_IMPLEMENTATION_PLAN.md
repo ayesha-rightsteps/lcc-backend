@@ -85,6 +85,13 @@ Follow these 7 phases to build the React application out methodically.
 4. Build the "Recently Watched" content ledger: Consume `GET /reports/content-logs`.
 5. Build the real-time Student Location Radar: Consume `GET /reports/student/:id/radar`.
 
+### Phase 8: Piracy & Security Alerts (Module 8)
+**Goal:** Detect heuristic attempts to steal content directly off the screen.
+1. **Student Side (Background):** Add window `blur` and keydown listeners mapping to Cmd+Shift+3, Cmd+Shift+4, or Print Screen inside the Content Viewer component. Immediately trigger `POST /security/alerts` if intercepted. Let the video pause to cause friction.
+2. **Admin Side:** 
+   - Add a Notification Bell/Widget showing count of unread Security Alerts (`GET /security/alerts?isReviewed=false`).
+   - Allow Sir to click "Dismiss" tying to `PATCH /security/alerts/:id/review`. This lets admins actively hunt out account sharing and screen ripping.
+
 ---
 
 ## 📌 Important Developer Tips
