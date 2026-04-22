@@ -21,7 +21,7 @@ const config = {
 
   rateLimiting: {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 900000,
-    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10) || 100,
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10) || 200,
   },
   cors: {
     origins: process.env.CORS_ORIGIN?.split(',') || ['*'],
