@@ -1,11 +1,22 @@
 import { asyncHandler, httpResponse, httpError, responseMessage, logger } from '../../../shared/index.js';
 import {
+  getStudentsService,
   createStudentService,
   updateHeartbeatService,
   updateStudentStatusService,
   resetStudentPasswordService,
   updateIpsService,
 } from '../services/user.service.js';
+
+const getStudents = asyncHandler(async (req, res) => {
+  try {
+    const students = await getStudentsService();
+    return httpResponse(req, res, 200, responseMessage.custom('Students fetched successfully'), students);
+  } catch (error) {
+    logger.error('Get students failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
 
 const createStudent = asyncHandler(async (req, res) => {
   try {
@@ -61,4 +72,4 @@ const updateIps = asyncHandler(async (req, res) => {
   }
 });
 
-export { createStudent, updateHeartbeat, updateStudentStatus, resetStudentPassword, updateIps };
+export { getStudents, createStudent, updateHeartbeat, updateStudentStatus, resetStudentPassword, updateIps };

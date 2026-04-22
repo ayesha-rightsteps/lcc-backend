@@ -2,6 +2,10 @@ import Content from '../../../models/content.model.js';
 import ContentLog from '../../../models/contentLog.model.js';
 import User from '../../../models/user.model.js';
 
+const getAllContentService = async () => {
+  return await Content.find({ isActive: true }).lean();
+};
+
 const getMyContentService = async (studentId) => {
   return await Content.find({
     isActive: true,
@@ -61,4 +65,4 @@ const logContentAccess = async (studentId, contentId, ip, device) => {
   });
 };
 
-export { getMyContentService, createContentService, manageAccessService, logContentAccess };
+export { getAllContentService, getMyContentService, createContentService, manageAccessService, logContentAccess };

@@ -27,6 +27,18 @@ const getAllTicketsService = async (query) => {
     .lean();
 };
 
+const getTicketByIdService = async (ticketId) => {
+  const ticket = await Ticket.findById(ticketId)
+    .populate('student', 'fullName email username')
+    .lean();
+  if (!ticket || !ticket.isActive) {
+    const error = new Error('Ticket not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  return ticket;
+};
+
 const replyTicketService = async (ticketId, userId, isStudent, data) => {
   const ticket = await Ticket.findById(ticketId);
   if (!ticket || !ticket.isActive) {
@@ -71,6 +83,7 @@ export {
   createTicketService,
   getMyTicketsService,
   getAllTicketsService,
+  getTicketByIdService,
   replyTicketService,
   updateStatusService,
 };

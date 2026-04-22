@@ -1,4 +1,6 @@
 import User from '../../../models/user.model.js';
+import Content from '../../../models/content.model.js';
+import Ticket from '../../../models/ticket.model.js';
 import ContentLog from '../../../models/contentLog.model.js';
 
 const getDashboardSummaryService = async () => {
@@ -6,7 +8,7 @@ const getDashboardSummaryService = async () => {
   const fourteenDaysFromNow = new Date();
   fourteenDaysFromNow.setDate(currentDate.getDate() + 14);
 
-  const [totalStudents, activeStudents, expiringSoon, inactiveStudents] = await Promise.all([
+  const [totalStudents, activeStudents, expiringSoon, inactiveStudents, totalContent, openTickets] = await Promise.all([
     User.countDocuments({ role: 'student' }),
     User.countDocuments({ role: 'student', isActive: true, isBlocked: false }),
     User.find({
@@ -14,14 +16,18 @@ const getDashboardSummaryService = async () => {
       isActive: true,
       validityDate: { $gte: currentDate, $lte: fourteenDaysFromNow }
     }).select('fullName email validityDate').sort('validityDate').lean(),
-    User.countDocuments({ role: 'student', $or: [{ isActive: false }, { isBlocked: true }] })
+    User.countDocuments({ role: 'student', $or: [{ isActive: false }, { isBlocked: true }] }),
+    Content.countDocuments({ isActive: true }),
+    Ticket.countDocuments({ isActive: true, status: 'open' }),
   ]);
 
   return {
     totalStudents,
     activeStudents,
     blockedOrInactive: inactiveStudents,
-    expiringSoonList: expiringSoon
+    totalContent,
+    openTickets,
+    expiringSoon,
   };
 };
 

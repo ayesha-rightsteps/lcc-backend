@@ -2,11 +2,22 @@ import https from 'https';
 import Content from '../../../models/content.model.js';
 import { asyncHandler, httpResponse, httpError, responseMessage, logger } from '../../../shared/index.js';
 import {
+  getAllContentService,
   getMyContentService,
   createContentService,
   manageAccessService,
   logContentAccess,
 } from '../services/content.service.js';
+
+const getAllContent = asyncHandler(async (req, res) => {
+  try {
+    const result = await getAllContentService();
+    return httpResponse(req, res, 200, responseMessage.custom('Content library fetched successfully'), result);
+  } catch (error) {
+    logger.error('Get all content failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
 
 const getMyContent = asyncHandler(async (req, res) => {
   try {
@@ -107,4 +118,4 @@ const streamContent = asyncHandler(async (req, res) => {
   }
 });
 
-export { getMyContent, createContent, manageAccess, streamContent };
+export { getAllContent, getMyContent, createContent, manageAccess, streamContent };

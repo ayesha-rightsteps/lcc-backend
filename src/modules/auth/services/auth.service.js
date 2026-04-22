@@ -5,7 +5,7 @@ const loginService = async ({ identifier, password, ip, device }) => {
   const user = await User.findOne({
     $or: [{ email: identifier.toLowerCase() }, { username: identifier.toLowerCase() }],
     isActive: true,
-  }).select('+password allowedIps role lastSeen isBlocked');
+  }).select('+password allowedIps role lastSeen isBlocked fullName username email phone enrollmentId courseName validityDate freeConsultationUsed');
 
   if (!user) {
     const error = new Error('Invalid credentials');
@@ -52,7 +52,7 @@ const loginService = async ({ identifier, password, ip, device }) => {
   const userObject = user.toObject();
   delete userObject.password;
 
-  const tokens = generateTokens({ userId: user._id, role: user.role });
+  const tokens = generateTokens({ userId: user._id.toString(), role: user.role });
 
   return { user: userObject, tokens };
 };

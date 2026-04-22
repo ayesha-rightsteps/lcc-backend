@@ -3,6 +3,7 @@ import {
   createTicketService,
   getMyTicketsService,
   getAllTicketsService,
+  getTicketByIdService,
   replyTicketService,
   updateStatusService,
 } from '../services/ticket.service.js';
@@ -40,6 +41,16 @@ const getAllTickets = asyncHandler(async (req, res) => {
   }
 });
 
+const getTicketById = asyncHandler(async (req, res) => {
+  try {
+    const result = await getTicketByIdService(req.params.ticketId);
+    return httpResponse(req, res, 200, responseMessage.custom('Ticket fetched successfully'), result);
+  } catch (error) {
+    logger.error('Get ticket by id failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
 const replyTicket = asyncHandler(async (req, res) => {
   try {
     const isStudent = req.user.role === 'student';
@@ -63,4 +74,4 @@ const updateStatus = asyncHandler(async (req, res) => {
   }
 });
 
-export { createTicket, getMyTickets, getAllTickets, replyTicket, updateStatus };
+export { createTicket, getMyTickets, getAllTickets, getTicketById, replyTicket, updateStatus };

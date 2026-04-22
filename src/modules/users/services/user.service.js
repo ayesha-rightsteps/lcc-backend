@@ -162,7 +162,15 @@ const updateIpsService = async (studentId, data) => {
   return null;
 };
 
+const getStudentsService = async () => {
+  const students = await User.find({ role: 'student' })
+    .select('-password')
+    .sort({ createdAt: -1 });
+  return students;
+};
+
 export {
+  getStudentsService,
   createStudentService,
   updateHeartbeatService,
   updateStudentStatusService,

@@ -4,14 +4,14 @@ export const validateRequest = (schema, target = 'body') => {
 
     switch (target) {
     case 'query':
-      dataToValidate = req.query;
+      dataToValidate = { query: req.query };
       break;
     case 'params':
-      dataToValidate = req.params;
+      dataToValidate = { params: req.params };
       break;
     case 'body':
     default:
-      dataToValidate = req.body;
+      dataToValidate = { body: req.body };
       break;
     }
 
@@ -42,14 +42,14 @@ export const validateRequest = (schema, target = 'body') => {
 
     switch (target) {
     case 'query':
-      Object.assign(req.query, result.data);
+      Object.assign(req.query, result.data.query);
       break;
     case 'params':
-      Object.assign(req.params, result.data);
+      Object.assign(req.params, result.data.params);
       break;
     case 'body':
     default:
-      Object.assign(req.body, result.data);
+      Object.assign(req.body, result.data.body);
       break;
     }
 
