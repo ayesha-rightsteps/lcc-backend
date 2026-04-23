@@ -6,7 +6,7 @@ import { getStudents, createStudent, updateHeartbeat, updateStudentStatus, reset
 const router = express.Router();
 
 router.get('/students', authenticate, isAdmin, getStudents);
-router.post('/heartbeat', authenticate, validateRequest(heartbeatSchema), updateHeartbeat);
+router.get('/heartbeat', authenticate, updateHeartbeat);
 router.post('/students', authenticate, isAdmin, validateRequest(createStudentSchema), createStudent);
 router.patch('/:studentId/status', authenticate, isAdmin, validateRequest(updateStatusSchema), updateStudentStatus);
 router.patch('/:studentId/reset-password', authenticate, isAdmin, resetStudentPassword);

@@ -31,7 +31,7 @@ const createStudent = asyncHandler(async (req, res) => {
 
 const updateHeartbeat = asyncHandler(async (req, res) => {
   try {
-    await updateHeartbeatService(req.user._id, req.body);
+    await updateHeartbeatService(req.user._id, req.query);
     return httpResponse(req, res, 200, responseMessage.custom('Heartbeat updated'), null);
   } catch (error) {
     logger.error('Heartbeat update failed', { error: error.message, requestId: req.requestId });
