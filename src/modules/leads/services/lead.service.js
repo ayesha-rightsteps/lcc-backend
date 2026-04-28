@@ -6,8 +6,8 @@ const createLeadService = async (data) => {
 
 const getLeadsService = async (query = {}) => {
   const filter = {};
-  if (query.status) filter.status = query.status;
-  if (query.branch) filter.branch = query.branch;
+  if (query.status) {filter.status = query.status;}
+  if (query.branch) {filter.branch = query.branch;}
   return await Lead.find(filter).sort('-createdAt').lean();
 };
 

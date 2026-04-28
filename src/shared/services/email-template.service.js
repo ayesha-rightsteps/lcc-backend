@@ -10,7 +10,7 @@ const welcomeStudentTemplate = (fullName, username, plainPassword) => ({
     <p>Password: <b>${plainPassword}</b></p>
     <br/>
     <p>Please log in to the portal using these credentials.</p>
-    <p>Note: Your account is restricted to a maximum of 2 devices.</p>
+    <p>Note: Your account is restricted to 1 device only.</p>
     <br/>
     <p>Best Regards,<br/>LCC Academy Team</p>
   `,

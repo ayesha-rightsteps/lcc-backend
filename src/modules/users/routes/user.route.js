@@ -5,11 +5,11 @@ import { getStudents, createStudent, updateHeartbeat, updateStudentStatus, reset
 
 const router = express.Router();
 
+router.post('/heartbeat', authenticate, validateRequest(heartbeatSchema), updateHeartbeat);
 router.get('/students', authenticate, isAdmin, getStudents);
-router.get('/heartbeat', authenticate, updateHeartbeat);
 router.post('/students', authenticate, isAdmin, validateRequest(createStudentSchema), createStudent);
-router.patch('/:studentId/status', authenticate, isAdmin, validateRequest(updateStatusSchema), updateStudentStatus);
-router.patch('/:studentId/reset-password', authenticate, isAdmin, resetStudentPassword);
-router.patch('/:studentId/ips', authenticate, isAdmin, validateRequest(updateIpsSchema), updateIps);
+router.post('/:studentId/status', authenticate, isAdmin, validateRequest(updateStatusSchema), updateStudentStatus);
+router.post('/:studentId/reset-password', authenticate, isAdmin, resetStudentPassword);
+router.post('/:studentId/ips', authenticate, isAdmin, validateRequest(updateIpsSchema), updateIps);
 
 export { router as userRoutes };

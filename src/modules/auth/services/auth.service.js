@@ -37,8 +37,8 @@ const loginService = async ({ identifier, password, ip, device }) => {
       }
     } else {
       const allowedCount = user.allowedIps.filter((entry) => !entry.isBlocked).length;
-      if (allowedCount >= 2) {
-        const error = new Error('IP limit reached. Account restricted to 2 locations. Contact Admin.');
+      if (allowedCount >= 1) {
+        const error = new Error('IP limit reached. Account restricted to 1 device. Contact Admin.');
         error.statusCode = 403;
         throw error;
       }

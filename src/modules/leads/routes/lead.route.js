@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post('/', validateRequest(createLeadSchema), createLead);
 router.get('/', authenticate, isAdmin, getLeads);
-router.patch('/:leadId/status', authenticate, isAdmin, validateRequest(updateLeadStatusSchema), updateLeadStatus);
+router.post('/:leadId/status', authenticate, isAdmin, validateRequest(updateLeadStatusSchema), updateLeadStatus);
 
 export { router as leadRoutes };

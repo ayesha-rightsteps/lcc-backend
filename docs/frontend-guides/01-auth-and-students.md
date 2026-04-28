@@ -42,8 +42,8 @@ This document provides the frontend with the API contracts and usage instruction
 ```
 
 **Handling 403 (Blocked):**
-- If a student tries to log in with a 3rd new IP, the response will be:
-  `{ "message": "IP limit reached. Your account is restricted to 2 IPs. Please contact Admin." }`
+- If a student tries to log in from a 2nd new device/IP, the response will be:
+  `{ "message": "IP limit reached. Account restricted to 1 device. Contact Admin." }`
 - If the account is deactivated: `{ "message": "Account is inactive" }`
 
 ---
