@@ -65,4 +65,5 @@ const logContentAccess = async (studentId, contentId, ip, device) => {
   });
 };
 
-export { getAllContentService, getMyContentService, createContentService, manageAccessService, logContentAccess };
+export { getAllContentService,
+  getMyContentService, createContentService, manageAccessService, logContentAccess };

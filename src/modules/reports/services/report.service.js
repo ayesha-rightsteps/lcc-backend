@@ -8,7 +8,9 @@ const getDashboardSummaryService = async () => {
   const fourteenDaysFromNow = new Date();
   fourteenDaysFromNow.setDate(currentDate.getDate() + 14);
 
-  const [totalStudents, activeStudents, expiringSoon, inactiveStudents, totalContent, openTickets] = await Promise.all([
+  const [
+    totalStudents, activeStudents, expiringSoon, inactiveStudents, totalContent, openTickets,
+  ] = await Promise.all([
     User.countDocuments({ role: 'student' }),
     User.countDocuments({ role: 'student', isActive: true, isBlocked: false }),
     User.find({

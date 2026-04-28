@@ -72,4 +72,11 @@ const updateIps = asyncHandler(async (req, res) => {
   }
 });
 
-export { getStudents, createStudent, updateHeartbeat, updateStudentStatus, resetStudentPassword, updateIps };
+export {
+  getStudents,
+  createStudent,
+  updateHeartbeat,
+  updateStudentStatus,
+  resetStudentPassword,
+  updateIps,
+};

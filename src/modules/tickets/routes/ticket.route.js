@@ -6,10 +6,10 @@ import { createTicket, getMyTickets, getAllTickets, getTicketById, replyTicket, 
 const router = express.Router();
 
 router.post('/', authenticate, validateRequest(createTicketSchema), createTicket);
-router.get('/my-tickets', authenticate, getMyTickets);
+router.get('/', authenticate, isAdmin, getAllTickets);
+router.get('/my', authenticate, getMyTickets);
 router.get('/:ticketId', authenticate, getTicketById);
 router.post('/:ticketId/reply', authenticate, validateRequest(replyTicketSchema), replyTicket);
-router.get('/', authenticate, isAdmin, getAllTickets);
-router.patch('/:ticketId/status', authenticate, isAdmin, validateRequest(updateStatusSchema), updateStatus);
+router.post('/:ticketId/status', authenticate, isAdmin, validateRequest(updateStatusSchema), updateStatus);
 
 export { router as ticketRoutes };
