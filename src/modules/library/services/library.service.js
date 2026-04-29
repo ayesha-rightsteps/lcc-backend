@@ -224,6 +224,68 @@ const getMyLibraryService = async (studentId) => {
   };
 };
 
+const updateSubcategoryService = async (subcategoryId, name) => {
+  const sub = await Subcategory.findOneAndUpdate(
+    { _id: subcategoryId, isActive: true },
+    { name },
+    { new: true }
+  ).select('name').lean();
+  if (!sub) {
+    const error = new Error('Subcategory not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  return sub;
+};
+
+const updateLibraryContentService = async (contentId, data) => {
+  const content = await LibraryContent.findOneAndUpdate(
+    { _id: contentId, isActive: true },
+    { title: data.title, description: data.description || '', driveId: data.driveId },
+    { new: true }
+  ).select('title description driveId').lean();
+  if (!content) {
+    const error = new Error('Content not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  return content;
+};
+
+const deleteLibraryContentService = async (contentId) => {
+  const content = await LibraryContent.findOneAndUpdate(
+    { _id: contentId, isActive: true },
+    { isActive: false },
+    { new: true }
+  ).lean();
+  if (!content) {
+    const error = new Error('Content not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  return null;
+};
+
+const deleteSubcategoryService = async (subcategoryId) => {
+  const sub = await Subcategory.findOneAndUpdate(
+    { _id: subcategoryId, isActive: true },
+    { isActive: false },
+    { new: true }
+  ).lean();
+  if (!sub) {
+    const error = new Error('Subcategory not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  const topics = await Topic.find({ subcategory: subcategoryId }).select('_id').lean();
+  const topicIds = topics.map(t => t._id);
+  await Promise.all([
+    Topic.updateMany({ subcategory: subcategoryId }, { isActive: false }),
+    LibraryContent.updateMany({ topic: { $in: topicIds } }, { isActive: false }),
+  ]);
+  return null;
+};
+
 export {
   getCategoriesService,
   createSubcategoryService,
@@ -232,4 +294,8 @@ export {
   getStudentTopicAccessService,
   manageStudentTopicAccessService,
   getMyLibraryService,
+  updateSubcategoryService,
+  updateLibraryContentService,
+  deleteLibraryContentService,
+  deleteSubcategoryService,
 };

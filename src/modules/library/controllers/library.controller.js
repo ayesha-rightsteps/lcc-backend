@@ -7,6 +7,10 @@ import {
   getStudentTopicAccessService,
   manageStudentTopicAccessService,
   getMyLibraryService,
+  updateSubcategoryService,
+  updateLibraryContentService,
+  deleteLibraryContentService,
+  deleteSubcategoryService,
 } from '../services/library.service.js';
 
 const getCategories = asyncHandler(async (req, res) => {
@@ -87,6 +91,50 @@ const getMyLibrary = asyncHandler(async (req, res) => {
   }
 });
 
+const updateSubcategory = asyncHandler(async (req, res) => {
+  try {
+    const result = await updateSubcategoryService(req.params.id, req.body.name);
+    logger.info('Subcategory updated', { id: req.params.id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Subcategory updated'), result);
+  } catch (error) {
+    logger.error('Update subcategory failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
+const deleteSubcategory = asyncHandler(async (req, res) => {
+  try {
+    await deleteSubcategoryService(req.params.id);
+    logger.info('Subcategory deleted', { id: req.params.id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Subcategory deleted'), null);
+  } catch (error) {
+    logger.error('Delete subcategory failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
+const updateLibraryContent = asyncHandler(async (req, res) => {
+  try {
+    const result = await updateLibraryContentService(req.params.id, req.body);
+    logger.info('Library content updated', { id: req.params.id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Content updated'), result);
+  } catch (error) {
+    logger.error('Update library content failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
+const deleteLibraryContent = asyncHandler(async (req, res) => {
+  try {
+    await deleteLibraryContentService(req.params.id);
+    logger.info('Library content deleted', { id: req.params.id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Content deleted'), null);
+  } catch (error) {
+    logger.error('Delete library content failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
 export {
   getCategories,
   createSubcategory,
@@ -95,4 +143,8 @@ export {
   getStudentTopicAccess,
   manageStudentTopicAccess,
   getMyLibrary,
+  updateSubcategory,
+  deleteSubcategory,
+  updateLibraryContent,
+  deleteLibraryContent,
 };
