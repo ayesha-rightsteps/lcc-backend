@@ -8,7 +8,8 @@ export const createStudentSchema = z.object({
     courseName: z.string().min(2, 'Course name is required'),
     courseDuration: z.number().int().positive('Course duration must be a positive number'),
     paymentAmount: z.number().nonnegative('Payment amount cannot be negative'),
-    paymentDate: z.string().datetime().optional(), // ISO string, defaults to now if not provided
+    paymentDate: z.string().datetime().optional(),
+    category: z.string().min(1, 'Category is required'),
   }),
 });
 
@@ -32,6 +33,24 @@ export const updateStatusSchema = z.object({
     message: 'extendedDays must be provided when action is extend_validity',
     path: ['extendedDays']
   })
+});
+
+export const updateStudentSchema = z.object({
+  body: z.object({
+    fullName: z.string().min(2).optional(),
+    phone: z.string().min(5).optional(),
+    courseName: z.string().min(2).optional(),
+    courseDuration: z.number().int().positive().optional(),
+    paymentAmount: z.number().nonnegative().optional(),
+    category: z.string().nullable().optional(),
+  }),
+});
+
+export const setPasswordSchema = z.object({
+  body: z.object({
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    sendEmail: z.boolean().optional(),
+  }),
 });
 
 export const updateIpsSchema = z.object({

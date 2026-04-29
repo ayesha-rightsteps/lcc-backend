@@ -2,15 +2,18 @@ import { asyncHandler, httpResponse, httpError, responseMessage, logger } from '
 import {
   getStudentsService,
   createStudentService,
+  updateStudentService,
   updateHeartbeatService,
+  locationDeniedService,
   updateStudentStatusService,
   resetStudentPasswordService,
+  setStudentPasswordService,
   updateIpsService,
 } from '../services/user.service.js';
 
 const getStudents = asyncHandler(async (req, res) => {
   try {
-    const students = await getStudentsService();
+    const students = await getStudentsService(req.query);
     return httpResponse(req, res, 200, responseMessage.custom('Students fetched successfully'), students);
   } catch (error) {
     logger.error('Get students failed', { error: error.message, requestId: req.requestId });
@@ -31,10 +34,21 @@ const createStudent = asyncHandler(async (req, res) => {
 
 const updateHeartbeat = asyncHandler(async (req, res) => {
   try {
-    await updateHeartbeatService(req.user._id, req.query);
-    return httpResponse(req, res, 200, responseMessage.custom('Heartbeat updated'), null);
+    const result = await updateHeartbeatService(req.user._id, req.body);
+    return httpResponse(req, res, 200, responseMessage.custom('Heartbeat updated'), result);
   } catch (error) {
     logger.error('Heartbeat update failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
+const locationDenied = asyncHandler(async (req, res) => {
+  try {
+    await locationDeniedService(req.user._id);
+    logger.info('Student blocked: location denied', { userId: req.user._id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Account suspended'), null);
+  } catch (error) {
+    logger.error('Location denied handler failed', { error: error.message, requestId: req.requestId });
     return httpError(req, res, error, error.statusCode || 500);
   }
 });
@@ -61,6 +75,28 @@ const resetStudentPassword = asyncHandler(async (req, res) => {
   }
 });
 
+const updateStudent = asyncHandler(async (req, res) => {
+  try {
+    const result = await updateStudentService(req.params.studentId, req.body);
+    logger.info('Student updated', { studentId: req.params.studentId, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Student updated successfully'), { student: result });
+  } catch (error) {
+    logger.error('Update student failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
+const setStudentPassword = asyncHandler(async (req, res) => {
+  try {
+    await setStudentPasswordService(req.params.studentId, req.body);
+    logger.info('Student password set', { studentId: req.params.studentId, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Password updated successfully'), null);
+  } catch (error) {
+    logger.error('Set password failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
 const updateIps = asyncHandler(async (req, res) => {
   try {
     await updateIpsService(req.params.studentId, req.body);
@@ -75,8 +111,11 @@ const updateIps = asyncHandler(async (req, res) => {
 export {
   getStudents,
   createStudent,
+  updateStudent,
   updateHeartbeat,
+  locationDenied,
   updateStudentStatus,
   resetStudentPassword,
+  setStudentPassword,
   updateIps,
 };

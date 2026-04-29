@@ -12,7 +12,11 @@ const getLeadsService = async (query = {}) => {
 };
 
 const updateLeadStatusService = async (leadId, status) => {
-  const lead = await Lead.findByIdAndUpdate(leadId, { status }, { new: true });
+  const lead = await Lead.findByIdAndUpdate(
+    leadId,
+    { status },
+    { new: true }
+  ).select('fullName phone email branch status createdAt').lean();
   if (!lead) {
     const error = new Error('Lead not found');
     error.statusCode = 404;

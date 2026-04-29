@@ -75,6 +75,11 @@ const userSchema = new mongoose.Schema(
     lastLng: {
       type: Number,
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
     freeConsultationUsed: {
       type: Boolean,
       default: false,
@@ -96,5 +101,6 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ email: 1, isActive: 1 });
 userSchema.index({ username: 1, isActive: 1 });
 userSchema.index({ enrollmentId: 1, isActive: 1 });
+userSchema.index({ category: 1, isActive: 1 });
 
 export default mongoose.model('User', userSchema);

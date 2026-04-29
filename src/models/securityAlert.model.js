@@ -9,7 +9,13 @@ const securityAlertSchema = new mongoose.Schema(
     },
     alertType: {
       type: String,
-      enum: ['screenshot_attempt', 'screen_recording', 'dev_tools_opened', 'suspicious_activity'],
+      enum: [
+        'screenshot_attempt',
+        'screen_recording',
+        'dev_tools_opened',
+        'suspicious_activity',
+        'new_ip_login_attempt',
+      ],
       required: true,
     },
     description: {

@@ -20,11 +20,23 @@ const getAllTicketsService = async (query) => {
   if (query.status) {
     filter.status = query.status;
   }
-  return await Ticket.find(filter)
-    .select('subject status messages student createdAt updatedAt')
-    .populate('student', 'fullName email username')
-    .sort('-createdAt')
-    .lean();
+
+  const page = parseInt(query.page, 10) || 1;
+  const limit = parseInt(query.limit, 10) || 15;
+  const skip = (page - 1) * limit;
+
+  const [total, items] = await Promise.all([
+    Ticket.countDocuments(filter),
+    Ticket.find(filter)
+      .select('subject status messages student createdAt updatedAt')
+      .populate('student', 'fullName email username')
+      .sort('-createdAt')
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+  ]);
+
+  return { items, pagination: { total, page, limit, hasNextPage: skip + items.length < total } };
 };
 
 const getTicketByIdService = async (ticketId) => {

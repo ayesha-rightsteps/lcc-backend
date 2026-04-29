@@ -64,6 +64,7 @@ const createStudentService = async (adminId, data) => {
     username,
     password: hashedPassword,
     enrollmentId,
+    category: data.category || null,
     allowedIps: [],
     isActive: true,
   });
@@ -81,11 +82,21 @@ const createStudentService = async (adminId, data) => {
 };
 
 const updateHeartbeatService = async (userId, data) => {
-  await User.findByIdAndUpdate(userId, {
-    lastSeen: new Date(),
-    ...(data.lat && { lastLat: data.lat }),
-    ...(data.lng && { lastLng: data.lng }),
-  });
+  const user = await User.findByIdAndUpdate(
+    userId,
+    {
+      lastSeen: new Date(),
+      ...(data.lat && { lastLat: data.lat }),
+      ...(data.lng && { lastLng: data.lng }),
+    },
+    { new: true }
+  ).select('isBlocked').lean();
+
+  return { isBlocked: user?.isBlocked ?? false };
+};
+
+const locationDeniedService = async (userId) => {
+  await User.findByIdAndUpdate(userId, { isActive: false, isBlocked: true });
   return null;
 };
 
@@ -162,18 +173,100 @@ const updateIpsService = async (studentId, data) => {
   return null;
 };
 
-const getStudentsService = async () => {
-  const students = await User.find({ role: 'student' })
-    .select('-password')
-    .sort({ createdAt: -1 });
-  return students;
+const setStudentPasswordService = async (studentId, data) => {
+  const user = await User.findById(studentId);
+  if (!user) {
+    const error = new Error('Student not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const hashedPassword = await hashPassword(data.password);
+  user.password = hashedPassword;
+  await user.save();
+
+  if (data.sendEmail) {
+    const resetEmail = passwordResetTemplate(user.fullName, user.username, data.password);
+    await sendEmail({ to: user.email, ...resetEmail });
+  }
+
+  return null;
+};
+
+const updateStudentService = async (studentId, data) => {
+  const user = await User.findById(studentId);
+  if (!user) {
+    const error = new Error('Student not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (data.fullName !== undefined) { user.fullName = data.fullName; }
+  if (data.phone !== undefined) { user.phone = data.phone; }
+  if (data.courseName !== undefined) { user.courseName = data.courseName; }
+  if (data.courseDuration !== undefined) { user.courseDuration = data.courseDuration; }
+  if (data.paymentAmount !== undefined) { user.paymentAmount = data.paymentAmount; }
+  if (data.category !== undefined) { user.category = data.category || null; }
+
+  await user.save();
+  const updatedUser = user.toObject();
+  delete updatedUser.password;
+  return updatedUser;
+};
+
+const getStudentsService = async (query = {}) => {
+  const filter = { role: 'student' };
+
+  if (query.search) {
+    const re = new RegExp(query.search, 'i');
+    filter.$or = [
+      { fullName: re },
+      { email: re },
+      { username: re },
+      { enrollmentId: re },
+    ];
+  }
+
+  if (query.category) {
+    filter.category = query.category;
+  }
+
+  const selectFields = 'fullName email username phone courseName courseDuration paymentAmount validityDate enrollmentId category allowedIps isActive isBlocked lastLat lastLng createdAt';
+
+  if (!query.page) {
+    return await User.find(filter)
+      .select(selectFields)
+      .populate('category', 'name')
+      .sort({ createdAt: -1 })
+      .lean();
+  }
+
+  const page = parseInt(query.page, 10) || 1;
+  const limit = parseInt(query.limit, 10) || 10;
+  const skip = (page - 1) * limit;
+
+  const [total, items] = await Promise.all([
+    User.countDocuments(filter),
+    User.find(filter)
+      .select(selectFields)
+      .populate('category', 'name')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+  ]);
+
+  return { items, pagination: { total, page, limit, hasNextPage: skip + items.length < total } };
 };
 
 export {
   getStudentsService,
   createStudentService,
+  updateStudentService,
   updateHeartbeatService,
+  locationDeniedService,
   updateStudentStatusService,
   resetStudentPasswordService,
+  setStudentPasswordService,
   updateIpsService,
 };
