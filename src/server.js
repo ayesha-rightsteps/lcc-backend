@@ -60,6 +60,12 @@ async function startServer() {
 
     process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
     process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('uncaughtException', (error) => {
+      logger.error(`Uncaught Exception: ${error.message}`);
+    });
+    process.on('unhandledRejection', (reason) => {
+      logger.error(`Unhandled Rejection: ${reason?.message || reason}`);
+    });
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);
