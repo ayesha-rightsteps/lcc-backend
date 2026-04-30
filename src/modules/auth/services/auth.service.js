@@ -35,6 +35,7 @@ const loginService = async ({ identifier, password, ip, device }) => {
   }
 
   if (user.role === 'student') {
+    if (!user.allowedIps) {user.allowedIps = [];}
     const existingIpEntry = user.allowedIps.find((entry) => entry.ip === ip);
 
     if (existingIpEntry) {

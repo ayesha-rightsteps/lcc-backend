@@ -72,6 +72,7 @@ const replyTicketService = async (ticketId, userId, isStudent, data) => {
     }
   }
 
+  if (!ticket.messages) {ticket.messages = [];}
   ticket.messages.push({ sender: userId, message: data.message });
   await ticket.save();
   return ticket;

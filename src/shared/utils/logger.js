@@ -1,5 +1,4 @@
 import winston from 'winston';
-import 'winston-mongodb';
 import config from '../../config/index.js';
 
 const levels = {
@@ -37,22 +36,11 @@ const productionFormat = winston.format.combine(
 const transports = [
   new winston.transports.Console({
     format: config.env === 'production' ? productionFormat : format,
+    handleExceptions: true,
+    handleRejections: true,
   }),
 ];
 
-// Add MongoDB transport for application logs
-if (config.mongodb.url) {
-  transports.push(
-    new winston.transports.MongoDB({
-      level: 'info',
-      db: config.mongodb.url,
-      metaKey: 'meta',
-      expireAfterSeconds: 3600 * 24 * 30, // 30 days
-      collection: 'application-logs',
-      format: productionFormat,
-    })
-  );
-}
 
 if (config.env === 'production') {
   transports.push(
@@ -68,12 +56,26 @@ if (config.env === 'production') {
   );
 }
 
+const exceptionFormat = winston.format.combine(
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.errors({ stack: true }),
+  winston.format.printf(({ timestamp, level, message, stack }) =>
+    `${timestamp} ${level}: ${message}${stack ? `\n${stack}` : ''}`
+  )
+);
+
 const logger = winston.createLogger({
   level: config.logging?.level || 'info',
   levels,
   format: productionFormat,
   transports,
   exitOnError: false,
+  exceptionHandlers: [
+    new winston.transports.Console({ format: exceptionFormat }),
+  ],
+  rejectionHandlers: [
+    new winston.transports.Console({ format: exceptionFormat }),
+  ],
 });
 
 logger.stream = {
