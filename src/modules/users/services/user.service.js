@@ -259,6 +259,11 @@ const getStudentsService = async (query = {}) => {
   return { items, pagination: { total, page, limit, hasNextPage: skip + items.length < total } };
 };
 
+const acceptTermsService = async (userId) => {
+  await User.findByIdAndUpdate(userId, { hasAcceptedTerms: true });
+  return null;
+};
+
 export {
   getStudentsService,
   createStudentService,
@@ -269,4 +274,5 @@ export {
   resetStudentPasswordService,
   setStudentPasswordService,
   updateIpsService,
+  acceptTermsService,
 };

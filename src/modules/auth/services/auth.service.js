@@ -5,7 +5,7 @@ import { comparePassword, generateTokens } from '../../../shared/index.js';
 const loginService = async ({ identifier, password, ip, device }) => {
   const user = await User.findOne({
     $or: [{ email: identifier.toLowerCase() }, { username: identifier.toLowerCase() }],
-  }).select('+password allowedIps role lastSeen isActive isBlocked fullName username email phone enrollmentId courseName validityDate freeConsultationUsed');
+  }).select('+password allowedIps role lastSeen isActive isBlocked fullName username email phone enrollmentId courseName validityDate freeConsultationUsed hasAcceptedTerms');
 
   if (!user) {
     const error = new Error('Invalid credentials');

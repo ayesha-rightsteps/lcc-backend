@@ -6,13 +6,14 @@ import {
 } from '../validations/user.schema.js';
 import {
   getStudents, createStudent, updateStudent, updateHeartbeat, locationDenied,
-  updateStudentStatus, resetStudentPassword, setStudentPassword, updateIps,
+  updateStudentStatus, resetStudentPassword, setStudentPassword, updateIps, acceptTerms,
 } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 router.post('/heartbeat', authenticate, validateRequest(heartbeatSchema), updateHeartbeat);
 router.post('/location-denied', authenticate, locationDenied);
+router.post('/accept-terms', authenticate, acceptTerms);
 router.get('/students', authenticate, isAdmin, getStudents);
 router.post('/students', authenticate, isAdmin, validateRequest(createStudentSchema), createStudent);
 router.post('/:studentId/update', authenticate, isAdmin, validateRequest(updateStudentSchema), updateStudent);

@@ -9,6 +9,7 @@ import {
   resetStudentPasswordService,
   setStudentPasswordService,
   updateIpsService,
+  acceptTermsService,
 } from '../services/user.service.js';
 
 const getStudents = asyncHandler(async (req, res) => {
@@ -108,6 +109,17 @@ const updateIps = asyncHandler(async (req, res) => {
   }
 });
 
+const acceptTerms = asyncHandler(async (req, res) => {
+  try {
+    await acceptTermsService(req.user._id);
+    logger.info('Terms accepted', { userId: req.user._id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Terms accepted'), null);
+  } catch (error) {
+    logger.error('Accept terms failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
 export {
   getStudents,
   createStudent,
@@ -118,4 +130,5 @@ export {
   resetStudentPassword,
   setStudentPassword,
   updateIps,
+  acceptTerms,
 };
