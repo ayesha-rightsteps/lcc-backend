@@ -5,14 +5,20 @@ import compression from 'compression';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { randomUUID } from 'crypto';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 import config from './config/index.js';
 import { logger, errorHandler, notFoundHandler, httpResponse } from './shared/index.js';
 import router from './router/index.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 
 app.set('trust proxy', 1);
+
+app.use('/public', express.static(join(__dirname, '../public')));
 
 app.use(
   helmet({

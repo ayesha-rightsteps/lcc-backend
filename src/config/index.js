@@ -36,6 +36,8 @@ const config = {
     fromEmail: process.env.RESEND_FROM_EMAIL,
   },
 
+  appUrl: process.env.APP_URL || `http://localhost:${process.env.PORT || 5000}`,
+
 };
 
 const requiredEnvVars = ['MONGODB_URL', 'JWT_SECRET'];

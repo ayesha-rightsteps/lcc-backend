@@ -5,13 +5,15 @@ const SURFACE = '#ffffff';
 const TEXT = '#1a1a1a';
 const MUTED = '#6b7280';
 
+const PLATFORM = 'ISSB SMART STUDY';
+
 const base = (content) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LCC Academy</title>
+  <title>${PLATFORM}</title>
 </head>
 <body style="margin:0;padding:0;background-color:${BG};font-family:'Helvetica Neue',Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:${BG};padding:40px 16px;">
@@ -21,12 +23,12 @@ const base = (content) => `
 
           <!-- Header -->
           <tr>
-            <td align="center" style="background-color:${PRIMARY};border-radius:12px 12px 0 0;padding:32px 40px;">
-              <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.04em;">
-                ISSB Smart Study
+            <td align="center" style="background-color:${PRIMARY};border-radius:12px 12px 0 0;padding:28px 40px 24px;">
+              <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:0.05em;text-transform:uppercase;">
+                ${PLATFORM}
               </p>
-              <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:${ACCENT};">
-                LCC Academy
+              <p style="margin:0;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${ACCENT};">
+                Official Student Portal
               </p>
             </td>
           </tr>
@@ -41,8 +43,8 @@ const base = (content) => `
           <!-- Footer -->
           <tr>
             <td align="center" style="background-color:${PRIMARY};border-radius:0 0 12px 12px;padding:20px 40px;">
-              <p style="margin:0 0 4px;font-size:12px;color:rgba(255,255,255,0.6);">
-                LCC Academy &mdash; ISSB Smart Study Portal
+              <p style="margin:0 0 4px;font-size:12px;color:rgba(255,255,255,0.65);">
+                ${PLATFORM} &mdash; Official Student Portal
               </p>
               <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.4);">
                 This is an automated email, please do not reply.
@@ -81,12 +83,12 @@ const infoRow = (label, value) => `
 `;
 
 const welcomeStudentTemplate = (fullName, username, plainPassword) => ({
-  subject: 'Welcome to LCC Academy — Your Login Credentials',
+  subject: `Welcome to ${PLATFORM} — Your Login Credentials`,
   html: base(`
     ${greeting(fullName)}
     <p style="margin:0 0 24px;font-size:15px;color:${TEXT};line-height:1.6;">
       Your enrollment has been successfully processed. You can now access the
-      <strong>ISSB Smart Study Portal</strong> using the credentials below.
+      <strong>${PLATFORM} Portal</strong> using the credentials below.
     </p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e0d5;border-radius:8px;overflow:hidden;margin-bottom:24px;">
@@ -120,12 +122,12 @@ const welcomeStudentTemplate = (fullName, username, plainPassword) => ({
       </tr>
     </table>
     ${divider}
-    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">LCC Academy Team</strong></p>
+    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">${PLATFORM} Team</strong></p>
   `),
 });
 
 const passwordResetTemplate = (fullName, username, plainPassword) => ({
-  subject: 'LCC Academy — Your Password Has Been Reset',
+  subject: `${PLATFORM} — Your Password Has Been Reset`,
   html: base(`
     ${greeting(fullName)}
     <p style="margin:0 0 24px;font-size:15px;color:${TEXT};line-height:1.6;">
@@ -146,12 +148,12 @@ const passwordResetTemplate = (fullName, username, plainPassword) => ({
       If you did not request this change, please contact the admin immediately.
     </p>
     ${divider}
-    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">LCC Academy Team</strong></p>
+    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">${PLATFORM} Team</strong></p>
   `),
 });
 
 const consultationAcceptedTemplate = (fullName, meetingDate, meetingTime, meetingLink) => ({
-  subject: 'Consultation Confirmed — LCC Academy',
+  subject: `Consultation Confirmed — ${PLATFORM}`,
   html: base(`
     ${greeting(fullName)}
     <p style="margin:0 0 24px;font-size:15px;color:${TEXT};line-height:1.6;">
@@ -187,12 +189,12 @@ const consultationAcceptedTemplate = (fullName, meetingDate, meetingTime, meetin
       </tr>
     </table>
     ${divider}
-    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">LCC Academy Team</strong></p>
+    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">${PLATFORM} Team</strong></p>
   `),
 });
 
 const consultationRejectedTemplate = (fullName, rejectionReason) => ({
-  subject: 'Consultation Update — LCC Academy',
+  subject: `Consultation Update — ${PLATFORM}`,
   html: base(`
     ${greeting(fullName)}
     <p style="margin:0 0 24px;font-size:15px;color:${TEXT};line-height:1.6;">
@@ -214,7 +216,7 @@ const consultationRejectedTemplate = (fullName, rejectionReason) => ({
       You are welcome to submit a new consultation request. We apologise for any inconvenience.
     </p>
     ${divider}
-    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">LCC Academy Team</strong></p>
+    <p style="margin:0;font-size:13px;color:${MUTED};">Best regards,<br/><strong style="color:${PRIMARY};">${PLATFORM} Team</strong></p>
   `),
 });
 

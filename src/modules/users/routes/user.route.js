@@ -6,7 +6,7 @@ import {
 } from '../validations/user.schema.js';
 import {
   getStudents, createStudent, updateStudent, updateHeartbeat, locationDenied,
-  updateStudentStatus, resetStudentPassword, setStudentPassword, updateIps, acceptTerms,
+  updateStudentStatus, resetStudentPassword, setStudentPassword, updateIps, acceptTerms, deleteStudent,
 } from '../controllers/user.controller.js';
 
 const router = express.Router();
@@ -21,5 +21,6 @@ router.post('/:studentId/status', authenticate, isAdmin, validateRequest(updateS
 router.post('/:studentId/reset-password', authenticate, isAdmin, resetStudentPassword);
 router.post('/:studentId/set-password', authenticate, isAdmin, validateRequest(setPasswordSchema), setStudentPassword);
 router.post('/:studentId/ips', authenticate, isAdmin, validateRequest(updateIpsSchema), updateIps);
+router.post('/:studentId/delete', authenticate, isAdmin, deleteStudent);
 
 export { router as userRoutes };

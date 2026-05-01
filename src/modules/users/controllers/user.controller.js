@@ -10,6 +10,7 @@ import {
   setStudentPasswordService,
   updateIpsService,
   acceptTermsService,
+  deleteStudentService,
 } from '../services/user.service.js';
 
 const getStudents = asyncHandler(async (req, res) => {
@@ -120,6 +121,17 @@ const acceptTerms = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteStudent = asyncHandler(async (req, res) => {
+  try {
+    await deleteStudentService(req.params.studentId);
+    logger.info('Student deleted', { studentId: req.params.studentId, adminId: req.user._id, requestId: req.requestId });
+    return httpResponse(req, res, 200, responseMessage.custom('Student deleted successfully'), null);
+  } catch (error) {
+    logger.error('Delete student failed', { error: error.message, requestId: req.requestId });
+    return httpError(req, res, error, error.statusCode || 500);
+  }
+});
+
 export {
   getStudents,
   createStudent,
@@ -131,4 +143,5 @@ export {
   setStudentPassword,
   updateIps,
   acceptTerms,
+  deleteStudent,
 };

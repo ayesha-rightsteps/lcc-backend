@@ -264,6 +264,22 @@ const acceptTermsService = async (userId) => {
   return null;
 };
 
+const deleteStudentService = async (studentId) => {
+  const user = await User.findById(studentId);
+  if (!user) {
+    const error = new Error('Student not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  if (user.role !== 'student') {
+    const error = new Error('Only student accounts can be deleted');
+    error.statusCode = 400;
+    throw error;
+  }
+  await User.findByIdAndDelete(studentId);
+  return null;
+};
+
 export {
   getStudentsService,
   createStudentService,
@@ -275,4 +291,5 @@ export {
   setStudentPasswordService,
   updateIpsService,
   acceptTermsService,
+  deleteStudentService,
 };
